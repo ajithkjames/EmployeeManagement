@@ -30,7 +30,7 @@ class TaskPermission(permissions.IsAuthenticated):
 
 
     def has_object_permission(self, request, view, obj):
-        if obj.assigner== request.user or request.user.is_superuser:
+        if obj.project.team.lead== request.user or request.user.is_superuser:
             return True
         else:
             if request.method in ('HEAD', 'OPTIONS', 'GET'):

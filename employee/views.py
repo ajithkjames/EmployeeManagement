@@ -7,7 +7,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from account.models import User, Skill
 from employee.models import Team, Project, Task
-from employee.serializers import TeamSerializer, ProjectSerializer, TaskSerializer
+from employee.serializers import TeamSerializer, ProjectSerializer, TaskSerializer, ProjectCreateSerializer, TeamCreateSerializer, TaskCreateSerializer
 from employee.permissions import TeamPermission, ProjectPermission, TaskPermission
 
 
@@ -19,6 +19,10 @@ class TaskViewSet(viewsets.ModelViewSet):
 	queryset = Task.objects.all()
 	permission_classes = (TaskPermission,)
 
+	def get_serializer_class(self):
+		if self.request.method != 'GET': 
+			self.serializer_class = TaskCreateSerializer 
+		return self.serializer_class
 
 
 class TeamViewSet(viewsets.ModelViewSet):
@@ -28,6 +32,11 @@ class TeamViewSet(viewsets.ModelViewSet):
 	queryset = Team.objects.all()
 	permission_classes = (TeamPermission,)
 
+	def get_serializer_class(self):
+		print self.request
+		if self.request.method != 'GET': 
+			self.serializer_class = TeamCreateSerializer 
+		return self.serializer_class
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
@@ -37,6 +46,10 @@ class ProjectViewSet(viewsets.ModelViewSet):
 	queryset = Project.objects.all()
 	permission_classes = (ProjectPermission,)
 
+	def get_serializer_class(self):
+		if self.request.method != 'GET': 
+			self.serializer_class = ProjectCreateSerializer 
+		return self.serializer_class
 
 
 class EmployeeTasks(generics.ListAPIView):
